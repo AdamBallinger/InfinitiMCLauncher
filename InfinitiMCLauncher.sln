@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinitiMCLauncher", "InfinitiMCLauncher\InfinitiMCLauncher.csproj", "{970DB177-F109-494D-9C0C-723EB99BC590}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{306CE0A0-C917-4AA6-B51A-9CA33CFA1BDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinitiMCLauncher2", "InfinitiMCLauncher2\InfinitiMCLauncher2.csproj", "{621F8799-D657-4B47-B449-1C79212C91D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{970DB177-F109-494D-9C0C-723EB99BC590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970DB177-F109-494D-9C0C-723EB99BC590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970DB177-F109-494D-9C0C-723EB99BC590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970DB177-F109-494D-9C0C-723EB99BC590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{306CE0A0-C917-4AA6-B51A-9CA33CFA1BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{306CE0A0-C917-4AA6-B51A-9CA33CFA1BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{306CE0A0-C917-4AA6-B51A-9CA33CFA1BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{306CE0A0-C917-4AA6-B51A-9CA33CFA1BDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621F8799-D657-4B47-B449-1C79212C91D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{621F8799-D657-4B47-B449-1C79212C91D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{621F8799-D657-4B47-B449-1C79212C91D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{621F8799-D657-4B47-B449-1C79212C91D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
