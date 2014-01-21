@@ -1,0 +1,8 @@
+Version 2.0 of the InfinitiMCLauncher will be a complete overhaul to the application, and shall be implemented properly to hopefully achieve the following:
+	- Better stability. (Organised background workers)
+	- Fix problems with permissions on some users systems
+	- Support launching Minecraft 1.7+ rather than just 1.6- (Accesstoken retrieval)
+	- New and improved UI design.
+	- Proper integrated launcher logging into UI.
+	- Proper minecraft install validation.
+	- Downloading of official minecraft assets from mojang rather than a custom zip.
