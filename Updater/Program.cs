@@ -38,7 +38,7 @@ namespace Updater
                         Console.WriteLine("Deleted old launcher executable successfully.");
                     }
                     Console.WriteLine("Downloading latest launcher executable.");
-                    client.DownloadFile(LauncherURL, "");
+                    client.DownloadFile(LauncherURL, Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Latest launcher downloaded successfully.");
                     Console.ResetColor();
