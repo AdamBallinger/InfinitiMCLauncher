@@ -24,7 +24,7 @@ namespace Updater
                 Version latestLauncherVersion = new Version(client.DownloadString(LauncherVersionURL));
                 Version currentLauncherVersion = new Version(reader.ReadLine());
 
-                if(currentLauncherVersion < latestLauncherVersion)
+                if(currentLauncherVersion != latestLauncherVersion)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Local launcher version: " + currentLauncherVersion);
