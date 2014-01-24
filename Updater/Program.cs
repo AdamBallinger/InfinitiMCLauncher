@@ -1,49 +1,75 @@
 ﻿using System;
-using System.Text;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace Updater
 {
     class Program
     {
+        internal static string LauncherVersionURL = "http://infiniti-launcher.crunchyware.net/version.txt";
         internal static string LauncherURL = "http://infiniti-launcher.crunchyware.net/InfinitiMCLauncher.exe";
         internal static string AppRuntimeDir = AppDomain.CurrentDomain.BaseDirectory;
         internal static string AppRuntimeParent = Directory.GetParent(AppRuntimeDir).ToString();
 
         static void Main(string[] args)
         {
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
+            WebClient client = null;
+            StreamReader reader = null;
 
-            StreamReader reader = new StreamReader(Directory.GetParent(AppRuntimeParent) + @"\current.txt");
-            Version currentVersion = new Version(reader.ReadLine());
-            reader.Close();
-
-            Version latestVersion = new Version(Encoding.UTF8.GetString(client.DownloadData("http://infiniti-launcher.crunchyware.net/version.txt")).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator));
-
-            if(latestVersion > currentVersion)
+            try
             {
-                Console.WriteLine("Updating launcher please wait..");
-                Console.WriteLine("AppRuntimeDir: " + AppRuntimeDir);
-                Console.WriteLine("AppRuntimeParent: " + AppRuntimeParent);
+                client = new WebClient();
+                reader = new StreamReader(Directory.GetParent(AppRuntimeParent) + @"\current.txt");
+                Version latestLauncherVersion = new Version(client.DownloadString(LauncherVersionURL));
+                Version currentLauncherVersion = new Version(reader.ReadLine());
 
-                if (File.Exists(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe"))
+                if(currentLauncherVersion < latestLauncherVersion)
                 {
-                    File.Delete(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
-                    Console.WriteLine("Deleting File: " + (Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe"));
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Local launcher version: " + currentLauncherVersion);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Latest launcher version: " + latestLauncherVersion);
+                    Console.ResetColor();            
+                    if(File.Exists(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe"))
+                    {
+                        Console.WriteLine("Deleting old launcher: " + Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
+                        File.Delete(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
+                        Console.WriteLine("Deleted old launcher executable successfully.");
+                    }
+                    Console.WriteLine("Downloading latest launcher executable.");
+                    client.DownloadFile(LauncherURL, "");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Latest launcher downloaded successfully.");
+                    Console.ResetColor();
+                    Console.WriteLine("Press any key to start the launcher.");
+                    Console.ReadKey();
+                    Process.Start(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Launcher is up to date.");
+                    Console.ReadKey();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if(client != null)
+                {
+                    client.Dispose();
                 }
 
-                client.DownloadFile(LauncherURL, Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
-                Console.WriteLine("Update finished. Press any key to open the launcher.");
-                Process.Start(Directory.GetParent(AppRuntimeParent) + @"\InfinitiMCLauncher.exe");
-            }
-            else
-            {
-                Console.WriteLine("The launcher is already up-to-date.");
-                Console.ReadKey();
+                if(reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
             }
         }
     }
