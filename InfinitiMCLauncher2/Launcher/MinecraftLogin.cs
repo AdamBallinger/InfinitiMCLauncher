@@ -23,22 +23,41 @@ namespace InfinitiMCLauncher2.Launcher
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns>Legacy minecraft session.</returns>
-        public MinecraftSession CreateLegacyLoginSession(string email, string password)
+        public void CreateLegacyLoginSession(string email, string password)
         {
             Logger.WriteLine("Creating legacy minecraft session.");
-            string[] sessionData = GET(string.Format("https://login.minecraft.net?user={0}&password={1}&version=13", email, password)).Split(':');
-            if(sessionData[0].ToUpper().Equals("BAD LOGIN"))
+            string[] sessionData = null; 
+
+            try
             {
-                Logger.WriteLine("Bad login from minecraft login servers.");
-                return null;
+                sessionData = GET(string.Format("https://login.minecraft.net?user={0}&password={1}&version=13", email, password)).Split(':');
+                if (sessionData[0].ToUpper().Equals("BAD LOGIN"))
+                {
+                    Logger.WriteLine("Bad login from minecraft login servers.");
+                    session.Valid = false;
+                }
+                else if(sessionData[2] != null)
+                {
+                    session.Valid = true;
+                    session.MinecraftUsername = sessionData[2];
+                    session.MinecraftPassword = password;
+                    session.MinecraftSessionToken = sessionData[3];
+                }
+                else
+                {
+                    Logger.WriteLine("No response. Session invalid.");
+                    session.Valid = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                session.MinecraftUsername = sessionData[2];
-                session.MinecraftPassword = password;
-                session.MinecraftSessionToken = sessionData[3];
-                return session;
+                Logger.WriteException(ex);
             }
+        }
+
+        public MinecraftSession Session
+        {
+            get { return session; }
         }
 
         /// <summary>
@@ -51,25 +70,36 @@ namespace InfinitiMCLauncher2.Launcher
             WebRequest request = WebRequest.Create(url);
             WebResponse response = null;
             StreamReader reader = null;
-            string responseString;
+            string responseString = null;
             try
             {
                 response = request.GetResponse();
+                reader = new StreamReader(response.GetResponseStream());
+                responseString = reader.ReadToEnd().Trim();
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
                 Logger.WriteException(ex);
-                MessageBox.Show("Failed to get response from server. Mojang servers may possibly be down.", "Invalid web response", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Invalid web response", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-                reader = new StreamReader(response.GetResponseStream());
-                responseString = reader.ReadToEnd().Trim();
-                reader.Close();
-                reader.Dispose();
+                if(reader != null)
+                    reader.Close();
             }
             return responseString;
         }
 
+        /// <summary>
+        /// Performs an HTTP PUT request to the specified url.
+        /// (UNIMPLEMENTED)
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="file"></param>
+        /// <returns>Server response.</returns>
+        private static string PUT(string url, string file)
+        {
+            return null;
+        }
     }
 }
